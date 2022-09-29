@@ -15,38 +15,24 @@
 </nav>
 <br>
 
-<head>
-    <style>
-    table,th{
-      border: 2px solid black;
-      border-collapse: collapse;
-      background-color: #965AA9;
-      text-align: center;
-    }
-    td{
-      border: 1px solid black;
-      border-collapse: collapse;
-      background-color: #D6BFE4;
-      font-weight: normal;
-      text-align: center;
-    }
-    </style>
-</head> 
-
-<table>
-    <tr>
-    <th>Nama Barang</th>
-    <th>Harga Barang</th>
-    <th>Deskripsi</th>
-    </tr>
-    {% comment %} Tambahkan data di bawah baris ini {% endcomment %}
-    {% for barang in list_barang %}
-        <tr>
-            <td>{{barang.nama_barang}}</td>
-            <td>{{barang.harga_barang}}</td>
-            <td>{{barang.deskripsi}}</td>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr class="table-dark">
+            <th>Nama Barang</th>
+            <th>Harga Barang</th>
+            <th>Deskripsi</th>
         </tr>
-    {% endfor %}
+    </thead>
+    <tbody>
+        {% comment %} Tambahkan data di bawah baris ini {% endcomment %}
+        {% for barang in list_barang %}
+            <tr>
+                <td>{{barang.nama_barang}}</td>
+                <td>{{barang.harga_barang}}</td>
+                <td>{{barang.deskripsi}}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
 </table>
 
 <p>Sesi terakhir login: {{ last_login }}<p>
