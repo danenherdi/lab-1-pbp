@@ -5,18 +5,34 @@
     <div class="container-fluid">
         <div class="navbar-header">
             <a class="navbar-brand" href="#">Wishlist</a>
+            <span class="navbar-left navbar-text">by {{nama}}</span> 
         </div>
-        
-        <ul class="nav navbar-nav">
-            <span class="navbar-left navbar-text">by {{nama}}</span>            
-        </ul>
    
         <ul class="nav navbar-nav navbar-right">
-            <button><a href="{% url 'wishlist:logout' %}">Logout</a></button>
+            <button class="btn btn-light"><a href="{% url 'wishlist:logout' %}">Logout</a></button>
         </ul>
     </div>
 </nav>
 <br>
+
+<head>
+    <style>
+    table,th{
+      border: 2px solid black;
+      border-collapse: collapse;
+      background-color: #965AA9;
+      text-align: center;
+    }
+    td{
+      border: 1px solid black;
+      border-collapse: collapse;
+      background-color: #D6BFE4;
+      font-weight: normal;
+      text-align: center;
+    }
+    </style>
+</head> 
+
 <table>
     <tr>
     <th>Nama Barang</th>
@@ -26,9 +42,9 @@
     {% comment %} Tambahkan data di bawah baris ini {% endcomment %}
     {% for barang in list_barang %}
         <tr>
-            <th>{{barang.nama_barang}}</th>
-            <th>{{barang.harga_barang}}</th>
-            <th>{{barang.deskripsi}}</th>
+            <td>{{barang.nama_barang}}</td>
+            <td>{{barang.harga_barang}}</td>
+            <td>{{barang.deskripsi}}</td>
         </tr>
     {% endfor %}
 </table>
