@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+<title>Wishlist</title>
+{% endblock meta %}
+
+{% block content %}
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Wishlist</a>
+            <span class="navbar-left navbar-text">by {{nama}}</span> 
+        </div>
+        
+        
+        <ul class="nav navbar-nav navbar-right">
+            <button class="btn btn-light"><a href="{% url 'wishlist:show_wishlist' %}">Back</a></button>
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right">
+            <button class="btn btn-light"><a href="{% url 'wishlist:logout' %}">Logout</a></button>
+        </ul>
+    </div>
+</nav>
+<br>
+
+<table id="table" class="table table-bordered table-striped">
+    <thead>
+        <tr class="table-dark">
+            <th>Nama Barang</th>
+            <th>Harga Barang</th>
+            <th>Deskripsi</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<button type="button">Load Wishlist</button>
+
+<div>
+    <form id="form_wishlist" method="POST" action="">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <td>Nama Barang: </td>
+                <td><input id="nama_barang" type="text" name="nama_barang" placeholder="Nama barang" class="form-control"></td>
+            </tr>
+                    
+            <tr>
+                <td>Harga Barang: </td>
+                <td><input id="harga_barang" type="text" name="harga_barang" placeholder="Harga barang" class="form-control"></td>
+            </tr>
+            
+            <tr>
+                <td>Deskripsi: </td>
+                <td><input id="deskripsi" type="text" name="deskripsi" placeholder="Deskripsi" class="form-control"></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td><input id="submit_button" class="btn login_btn btn-success" type="submit" value="Submit"></td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<p>Sesi terakhir login: {{ last_login }}<p>
+
+<!-- Referensi : https://stackoverflow.com/questions/33354629/how-to-append-ajax-response-array-of-objects-to-tbody-of-a-table -->
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("button").click(function(){
+            $.getJSON("{% url 'wishlist:show_wishlist_json' %}", function(data){
+                $(data).each(function(i, field) {
+                    $("table tbody").append($("<tr>")
+                        .append($("<td>").append(field.fields.nama_barang))
+                        .append($("<td>").append(field.fields.harga_barang))
+                        .append($("<td>").append(field.fields.deskripsi)));
+                });
+            });
+        });
+    });
+</script>
+
+<!-- Referensi : https://www.digitalocean.com/community/tutorials/submitting-ajax-forms-with-jquery -->
+<script>
+    $('#form_wishlist').submit((event) => {
+        
+        // var dataFormWishlist = {
+        //     nama_barang: $("#nama_barang").val(),
+        //     harga_barang: $("#harga_barang").val(),
+        //     deskripsi: $("#deskripsi").val(),
+        // };
+
+        $.ajax({
+            type: 'POST',
+            url: '/wishlist/ajax/submit',
+            data: $('#form_wishlist').serialize(),
+            dataType: 'json',
+            
+            success: (data) => {
+                console.log(data)
+                $("table tbody").append($("<tr>")
+                    .append($("<td>").append(data.nama_barang))
+                    .append($("<td>").append(data.harga_barang))
+                    .append($("<td>").append(data.deskripsi)));
+            },
+            error: () => {
+                alert("Barang tidak bisa ditambahkan!")
+            }     
+        });
+        event.preventDefault();
+    });       
+</script>
+
+{% endblock content %}
